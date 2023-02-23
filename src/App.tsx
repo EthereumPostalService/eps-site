@@ -28,27 +28,30 @@ function App() {
         }}
       >
         <DynamicWagmiConnector>
-          <Card sx={{ maxWidth: 800 }}>
-            <Box sx={{ float: "right", p: 1 }}>
-              <DynamicWidget
-                variant="dropdown"
-                buttonClassName="MuiButtonBase-root MuiButton-roo"
-                innerButtonComponent={
-                  <Box sx={{ pl: 1, pr: 1 }}>Connect Wallet</Box>
-                }
-              />
-            </Box>
-            <CardMedia component="img" image="EPS-01.png" title="eps-logo" />
-            <CardContent>
-              <EthMailForm
-                address={"0x2156fcCff55637317D211B62318007309378fB95"}
-              />
-            </CardContent>
-            <CardContent />
-          </Card>
+
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Card sx={{ maxWidth: 800, margin: "5vh", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
+              <Box sx={{ float: "right", p: 1 }}>
+                <DynamicWidget
+                  variant="dropdown"
+                  buttonClassName="MuiButtonBase-root MuiButton-roo"
+                  innerButtonComponent={
+                    <Box sx={{ pl: 1, pr: 1 }}>Connect Wallet</Box>
+                  }
+                />
+              </Box>
+              <CardMedia component="img" image="EPS-01.png" title="eps-logo" />
+              <CardContent>
+                <EthMailForm
+                  address={"0x2156fcCff55637317D211B62318007309378fB95"}
+                />
+              </CardContent>
+            </Card>
+          </div>
+
         </DynamicWagmiConnector>
       </DynamicContextProvider>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }
 
