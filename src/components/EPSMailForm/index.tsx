@@ -43,7 +43,7 @@ const EPSMailForm = (props: FormProps) => {
   const [recipient, setName] = useState("");
   const [addLine1, setAddLine1] = useState("");
   const [addLine2, setAddLine2] = useState("");
-  const [countryCode, setCountryCode] = useState("");
+  const [countryCode, setCountryCode] = useState("US");
   const [zip, setZip] = useState("");
   const [city, setCity] = useState("");
   const [msg, setMsg] = useState("");
@@ -109,10 +109,10 @@ const EPSMailForm = (props: FormProps) => {
           numeric: string;
         }) => {
           return (
-            countryCode === country.country ||
-            countryCode === country.alpha2 ||
-            countryCode === country.alpha3 ||
-            countryCode === country.numeric
+            // countryCode === country.country ||
+            countryCode === country.alpha2 
+            // countryCode === country.alpha3 ||
+            // countryCode === country.numeric
           );
         }
       ).length === 1;

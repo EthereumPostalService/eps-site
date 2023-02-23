@@ -28,9 +28,14 @@ function App() {
         }}
       >
         <DynamicWagmiConnector>
-
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Card sx={{ maxWidth: 800, margin: "5vh", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Card
+              sx={{
+                maxWidth: 800,
+                mt: { sm: 1, md: "5vh" },
+                boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+              }}
+            >
               <Box sx={{ float: "right", p: 1 }}>
                 <DynamicWidget
                   variant="dropdown"
@@ -48,10 +53,9 @@ function App() {
               </CardContent>
             </Card>
           </div>
-
         </DynamicWagmiConnector>
       </DynamicContextProvider>
-    </ThemeProvider >
+    </ThemeProvider>
   );
 }
 
