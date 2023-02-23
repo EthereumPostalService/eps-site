@@ -15,11 +15,7 @@ const darkTheme = createTheme({
   },
 });
 
-interface WidgetProps {
-  address: string | undefined;
-}
-
-function App(props: WidgetProps) {
+function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <DynamicContextProvider
@@ -37,7 +33,9 @@ function App(props: WidgetProps) {
               <DynamicWidget
                 variant="dropdown"
                 buttonClassName="MuiButtonBase-root MuiButton-roo"
-                innerButtonComponent={<Box sx={{pl: 1, pr: 1}}>Connect Wallet</Box>}
+                innerButtonComponent={
+                  <Box sx={{ pl: 1, pr: 1 }}>Connect Wallet</Box>
+                }
               />
             </Box>
             <CardMedia component="img" image="EPS-01.png" title="eps-logo" />

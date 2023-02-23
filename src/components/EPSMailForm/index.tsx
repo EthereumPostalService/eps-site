@@ -269,7 +269,7 @@ const EPSMailForm = (props: FormProps) => {
         error={!validMsg() && attemptedSubmit}
         sx={{ mt: 1, mb: 1, width: "100%" }}
         id="message"
-        label="Message (HTML)"
+        label="Message"
         multiline
         rows={4}
         value={msg}

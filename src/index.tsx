@@ -9,11 +9,11 @@ const widgetDivs = document.querySelectorAll(
 
 widgetDivs.forEach((div) => {
   const root = ReactDOM.createRoot(div);
-    root.render(
-      <React.StrictMode>
-        <App address={div.dataset.address} />
-      </React.StrictMode>
-    );
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
 });
 
 // If you want to start measuring performance in your app, pass a function
