@@ -17,7 +17,6 @@ import abi from "../../EthereumPostalService.json";
 import { BigNumber } from "ethers";
 import { formatEther } from "ethers/lib/utils.js";
 import { Address, encrypt, encryptAddress } from "../../helpers/enc";
-import { useContractReads } from "wagmi/dist";
 // This fails with some annoying webpack problems, i don't really want to deal with it
 // so i ripped a copy of the enc stuff to this workspace
 // import { encrypt } from "@eth-mail/client-lib/src/enc";
@@ -25,30 +24,17 @@ interface FormProps {
   address: `0x${string}`;
 }
 const EPSMailForm = (props: FormProps) => {
-  console.log(props.address);
-  // const { data, isError, isLoading } = useContractReads({
-  //   contracts: [
-  //     {
-  //       address: props.address,
-  //       abi: abi.abi,
-  //       functionName: "getPostageWei",
-  //     },
-  //     {
-  //       address: props.address,
-  //       abi: abi.abi,
-  //       functionName: "encryptionPubKey",
-  //     },
-  //   ],
-  // });
   const feeRead = useContractRead({
     address: props.address,
     abi: abi.abi,
     functionName: "getPostageWei",
+    watch: true,
   });
   const encryptionRead = useContractRead({
     address: props.address,
     abi: abi.abi,
     functionName: "encryptionPubKey",
+    watch: true,
   });
 
   const [encryptAdd, setEncAdd] = useState(true);
@@ -189,9 +175,6 @@ const EPSMailForm = (props: FormProps) => {
       setAttempted(true);
     }
   };
-  if (!encryptionRead.isSuccess || !feeRead.isSuccess) {
-    return <>Loading</>;
-  }
   return (
     <>
       <FormControlLabel
@@ -297,9 +280,9 @@ const EPSMailForm = (props: FormProps) => {
       {isLoading ? (
         <LinearProgress sx={{ mt: 1 }} color="secondary" />
       ) : isSuccess ? (
-        <>success</>
+        <>Success</>
       ) : isError ? (
-        <>error</>
+        <>Error</>
       ) : (
         <Button
           disabled={!allValid() && attemptedSubmit}
@@ -310,7 +293,7 @@ const EPSMailForm = (props: FormProps) => {
           Send for{" "}
           {feeRead &&
             feeRead.isSuccess &&
-            formatEther(feeRead.data as BigNumber)}
+            formatEther(feeRead.data as BigNumber).substring(0, 6)}
           {"Ξ"}
         </Button>
       )}

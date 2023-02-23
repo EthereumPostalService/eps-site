@@ -4,27 +4,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { ThemeProvider } from "@emotion/react";
 import EthMailForm from "./components/EPSMailForm";
-import { Button, Chip, createTheme } from "@mui/material";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { publicProvider } from "wagmi/providers/public";
-
-import {
-  WagmiConfig,
-  configureChains,
-  createClient,
-  useAccount,
-  useChainId,
-  useConnect,
-  useDisconnect,
-  useNetwork,
-  useSwitchNetwork,
-} from "wagmi";
-import { optimism, mainnet, foundry } from "wagmi/chains";
-import {
-  DynamicContextProvider,
-  DynamicWidget,
-  useDynamicContext,
-} from "@dynamic-labs/sdk-react";
+import { createTheme } from "@mui/material";
+import { DynamicContextProvider, DynamicWidget } from "@dynamic-labs/sdk-react";
 import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
 import { Box } from "@mui/material";
 
@@ -39,7 +20,6 @@ interface WidgetProps {
 }
 
 function App(props: WidgetProps) {
-  const contract = useContract();
   return (
     <ThemeProvider theme={darkTheme}>
       <DynamicContextProvider
@@ -54,16 +34,17 @@ function App(props: WidgetProps) {
         <DynamicWagmiConnector>
           <Card sx={{ maxWidth: 800 }}>
             <Box sx={{ float: "right", p: 1 }}>
-              <DynamicWidget variant="dropdown" />
+              <DynamicWidget
+                variant="dropdown"
+                buttonClassName="MuiButtonBase-root MuiButton-roo"
+                innerButtonComponent={<Box sx={{pl: 1, pr: 1}}>Connect Wallet</Box>}
+              />
             </Box>
-            {/* <Profile /> */}
             <CardMedia component="img" image="EPS-01.png" title="eps-logo" />
             <CardContent>
-              {contract ? (
-                <EthMailForm address={contract} />
-              ) : (
-                <>Loading network data</>
-              )}
+              <EthMailForm
+                address={"0x2156fcCff55637317D211B62318007309378fB95"}
+              />
             </CardContent>
             <CardContent />
           </Card>
@@ -74,81 +55,3 @@ function App(props: WidgetProps) {
 }
 
 export default App;
-
-
-
-
-export const useContract = () => {
-  const [contract, setContract] = React.useState<`0x${string}`>();
-  const { chain } = useNetwork();
-  const contracts: Map<number, `0x${string}`> = new Map([
-    [1, "0xethere"],
-    [10, "0xC4bB0109C691cAED058Eec6D68F5458476C6413D"],
-  ]);
-  React.useEffect(() => {
-    if (chain && contracts.get(chain.id)) {
-      setContract(contracts.get(chain.id));
-    }
-  }, [chain]);
-  return contract;
-};
-
-
-
-
-function Profile() {
-  const { address, isConnected } = useAccount();
-  const { chain } = useNetwork();
-  const { user, handleLogOut, setShowAuthFlow, showAuthFlow, walletConnector } =
-    useDynamicContext();
-  const { chains, error, isLoading, pendingChainId, switchNetwork } =
-    useSwitchNetwork();
-  const { connect } = useConnect({
-    connector: new InjectedConnector(),
-  });
-  const { disconnect } = useDisconnect();
-
-  if (isConnected && chain)
-    return (
-      <Card style={{ float: "right" }}>
-        <CardContent>
-          {chains.map((x: { id: React.Key | null | undefined; name: any }) => (
-            <Button
-              disabled={!switchNetwork || x.id === chain?.id}
-              key={x.id}
-              onClick={() => switchNetwork?.(x.id)}
-            >
-              {x.name}
-              {isLoading && pendingChainId === x.id && " (switching)"}
-            </Button>
-          ))}
-          {/* {!contracts.get(chain.network)
-            ? "Invalid chain"
-            : chain.name} */}
-          <Chip
-            label={
-              address?.substring(0, 6) +
-              "..." +
-              address?.substring(address?.length - 4)
-            }
-          />
-          <Button color="error" variant="outlined" onClick={() => disconnect()}>
-            Disconnect
-          </Button>
-        </CardContent>
-      </Card>
-    );
-  return (
-    <Card sx={{ float: "right" }}>
-      <CardContent>
-        <Button
-          variant="outlined"
-          color="success"
-          onClick={() => setShowAuthFlow(true)}
-        >
-          Connect Wallet
-        </Button>
-      </CardContent>
-    </Card>
-  );
-}
