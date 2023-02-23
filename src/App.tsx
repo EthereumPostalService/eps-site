@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { ThemeProvider } from "@emotion/react";
-import EthMailForm from "./components/EthMailForm";
+import EthMailForm from "./components/EPSMailForm";
 import { createTheme } from "@mui/material";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { publicProvider } from "wagmi/providers/public";

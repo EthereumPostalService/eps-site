@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "EPS",
+  "name": "Ethereum Postal Service Widget",
   "icons": [
     {
       "src": "favicon.ico",

@@ -13,7 +13,7 @@ import {
   useWaitForTransaction,
   useContractRead,
 } from "wagmi";
-import abi from "../../EthMail.json";
+import abi from "../../EthereumPostalService.json";
 import { BigNumber } from "ethers";
 import { formatEther } from "ethers/lib/utils.js";
 import { Address, encrypt, encryptAddress } from "../../helpers/enc";
@@ -23,7 +23,7 @@ import { Address, encrypt, encryptAddress } from "../../helpers/enc";
 interface FormProps {
   address: `0x${string}`;
 }
-const EthMailForm = (props: FormProps) => {
+const EPSMailForm = (props: FormProps) => {
   const feeRead = useContractRead({
     address: props.address,
     abi: abi.abi,
@@ -71,6 +71,7 @@ const EthMailForm = (props: FormProps) => {
       );
       setAddressEnc(ea);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     msg,
     encryptMsg,
@@ -184,7 +185,7 @@ const EthMailForm = (props: FormProps) => {
             defaultChecked
           />
         }
-        label="Encrypt the letter recipient data."
+        label="Encrypt the postage recipient's information."
       />
       <TextField
         error={!validName() && attemptedSubmit}
@@ -260,7 +261,7 @@ const EthMailForm = (props: FormProps) => {
             defaultChecked
           />
         }
-        label="Encrypt the letter message content."
+        label="Encrypt the postage message content."
       />
       <TextField
         error={!validMsg() && attemptedSubmit}
@@ -298,4 +299,4 @@ const EthMailForm = (props: FormProps) => {
   );
 };
 
-export default EthMailForm;
+export default EPSMailForm;
