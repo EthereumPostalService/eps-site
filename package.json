@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@dynamic-labs/sdk-react": "^0.14.36",
+    "@dynamic-labs/wagmi-connector": "^0.14.36",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.9",
