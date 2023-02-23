@@ -201,7 +201,7 @@ const EPSMailForm = (props: FormProps) => {
             error={!validName() && attemptedSubmit}
             label="To"
             id="name"
-            sx={{ mt: 1, mb: 1, width: "100%" }}
+            sx={{ width: "100%" }}
             value={recipient}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setName(event.target.value);
@@ -216,8 +216,6 @@ const EPSMailForm = (props: FormProps) => {
             label="Address line 1"
             id="address1"
             sx={{
-              mt: 1,
-              mb: 1,
               width: "100%",
             }}
             value={addLine1}
@@ -232,7 +230,7 @@ const EPSMailForm = (props: FormProps) => {
             error={!validAdd2() && attemptedSubmit}
             label="Address line 2"
             id="address2"
-            sx={{ mt: 1, mb: 1, width: "100%" }}
+            sx={{ width: "100%" }}
             value={addLine2}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setAddLine2(event.target.value);
@@ -245,7 +243,7 @@ const EPSMailForm = (props: FormProps) => {
             error={!validCity() && attemptedSubmit}
             label="City"
             id="city"
-            sx={{ mt: 1, mb: 1, width: "100%" }}
+            sx={{ width: "100%" }}
             value={city}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setCity(event.target.value);
@@ -258,7 +256,7 @@ const EPSMailForm = (props: FormProps) => {
             error={!validCountry() && attemptedSubmit}
             label="Country Code"
             id="cc"
-            sx={{ mt: 1, mb: 1, width: "100%" }}
+            sx={{ width: "100%" }}
             value={countryCode}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setCountryCode(event.target.value.toUpperCase());
@@ -271,7 +269,7 @@ const EPSMailForm = (props: FormProps) => {
             error={!validZip() && attemptedSubmit}
             label="ZIP/Postal Code"
             id="zip"
-            sx={{ mt: 1, mb: 1, width: "100%" }}
+            sx={{ width: "100%" }}
             value={zip}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setZip(event.target.value);
@@ -297,7 +295,7 @@ const EPSMailForm = (props: FormProps) => {
         <Grid item xs={12}>
           <TextField
             error={!validMsg() && attemptedSubmit}
-            sx={{ mt: 1, mb: 1, width: "100%" }}
+            sx={{ width: "100%" }}
             id="message"
             label="Message"
             multiline
@@ -311,7 +309,7 @@ const EPSMailForm = (props: FormProps) => {
 
         <Grid item xs={12}>
           {isLoading ? (
-            <LinearProgress sx={{ mt: 1 }} color="secondary" />
+            <LinearProgress sx={{}} color="secondary" />
           ) : isSuccess ? (
             <>Success</>
           ) : isError ? (
@@ -320,7 +318,7 @@ const EPSMailForm = (props: FormProps) => {
             <Button
               disabled={!allValid() && attemptedSubmit}
               onClick={submitForm}
-              sx={{ mt: 1, float: "right" }}
+              sx={{ float: "right" }}
               variant="contained"
             >
               Send for{" "}
