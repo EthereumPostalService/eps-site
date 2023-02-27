@@ -5,6 +5,7 @@ import {
   Checkbox,
   LinearProgress,
   Grid,
+  Tooltip,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { all } from "iso-3166-1";
@@ -142,21 +143,29 @@ const EPSMailForm = (props: FormProps) => {
     );
   };
 
+
+  let sendAddress: Address;
+  if (props.defaultEncryptedAddress) {
+    // TODO: Allow updating name here?
+    sendAddress = props.defaultEncryptedAddress!;
+  } else if (encryptAdd) {
+    sendAddress = addressEnc!;
+  } else {
+    sendAddress = {
+      addressLine1: addLine1,
+      addressLine2: addLine2,
+      city: city,
+      countryCode: countryCode,
+      postalOrZip: zip,
+      name: recipient
+    }
+  }
   const { config } = usePrepareContractWrite({
     address: props.address,
     abi: abi.abi,
     functionName: "sendEncryptedMail",
     args: [
-      encryptAdd
-        ? addressEnc
-        : {
-          addressLine1: addLine1,
-          addressLine2: addLine2,
-          city: city,
-          countryCode: countryCode,
-          postalOrZip: zip,
-          name: recipient,
-        },
+      sendAddress,
       encryptMsg ? messageEnc : msg,
       encryptAdd,
       encryptMsg,
@@ -171,7 +180,7 @@ const EPSMailForm = (props: FormProps) => {
   });
 
   const submitForm = () => {
-    if (allValid()) {
+    if (props.defaultEncryptedAddress || allValid()) {
       write?.();
     } else {
       setAttempted(true);
@@ -181,116 +190,123 @@ const EPSMailForm = (props: FormProps) => {
     <>
       <Grid container spacing={2}>
 
-        <Grid item xs={12} direction="row">
-          <FormControlLabel
-            control={
-              <Checkbox
-                value={encryptAdd}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setEncAdd(!encryptAdd);
-                }}
-                defaultChecked
-              />
-            }
-            label="Encrypt the postage recipient's information."
-          />
-        </Grid>
+        {
+          !props.defaultEncryptedAddress ?
+            <>
+              <Grid item xs={12} direction="row">
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      value={encryptAdd}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        setEncAdd(!encryptAdd);
+                      }}
+                      defaultChecked
+                    />
+                  }
+                  label="Encrypt the postage recipient's information."
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+
+                <TextField
+                  error={!validName() && attemptedSubmit}
+                  label="To"
+                  id="name"
+                  sx={{ width: "100%" }}
+                  value={recipient}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setName(event.target.value);
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+
+                <TextField
+                  error={!validAdd1() && attemptedSubmit}
+                  label="Address line 1"
+                  id="address1"
+                  sx={{
+                    width: "100%",
+                  }}
+                  value={addLine1}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setAddLine1(event.target.value);
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  error={!validAdd2() && attemptedSubmit}
+                  label="Address line 2"
+                  id="address2"
+                  sx={{ width: "100%" }}
+                  value={addLine2}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setAddLine2(event.target.value);
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  error={!validCity() && attemptedSubmit}
+                  label="City"
+                  id="city"
+                  sx={{ width: "100%" }}
+                  value={city}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setCity(event.target.value);
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <TextField
+                  error={!validCountry() && attemptedSubmit}
+                  label="Country Code"
+                  id="cc"
+                  sx={{ width: "100%" }}
+                  value={countryCode}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setCountryCode(event.target.value.toUpperCase());
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <TextField
+                  error={!validZip() && attemptedSubmit}
+                  label="ZIP/Postal Code"
+                  id="zip"
+                  sx={{ width: "100%" }}
+                  value={zip}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setZip(event.target.value);
+                  }}
+                />
+              </Grid>
+            </>
+            : <></>}
 
         <Grid item xs={12}>
-
-          <TextField
-            error={!validName() && attemptedSubmit}
-            label="To"
-            id="name"
-            sx={{ width: "100%" }}
-            value={recipient}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setName(event.target.value);
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-
-          <TextField
-            error={!validAdd1() && attemptedSubmit}
-            label="Address line 1"
-            id="address1"
-            sx={{
-              width: "100%",
-            }}
-            value={addLine1}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setAddLine1(event.target.value);
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            error={!validAdd2() && attemptedSubmit}
-            label="Address line 2"
-            id="address2"
-            sx={{ width: "100%" }}
-            value={addLine2}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setAddLine2(event.target.value);
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            error={!validCity() && attemptedSubmit}
-            label="City"
-            id="city"
-            sx={{ width: "100%" }}
-            value={city}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setCity(event.target.value);
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={6}>
-          <TextField
-            error={!validCountry() && attemptedSubmit}
-            label="Country Code"
-            id="cc"
-            sx={{ width: "100%" }}
-            value={countryCode}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setCountryCode(event.target.value.toUpperCase());
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={6}>
-          <TextField
-            error={!validZip() && attemptedSubmit}
-            label="ZIP/Postal Code"
-            id="zip"
-            sx={{ width: "100%" }}
-            value={zip}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setZip(event.target.value);
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                value={encryptMsg}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setEncMsg(!encryptMsg);
-                }}
-                defaultChecked
-              />
-            }
-            label="Encrypt the postage message content."
-          />
+          <Tooltip title="Unencrypted messages are publicly viewable" placement="top">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value={encryptMsg}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setEncMsg(!encryptMsg);
+                  }}
+                  defaultChecked
+                />
+              }
+              label="Encrypt the postage message content."
+            />
+          </Tooltip>
         </Grid>
 
         <Grid item xs={12}>
