@@ -18,12 +18,13 @@ import abi from "../../EthereumPostalService.json";
 import { BigNumber } from "ethers";
 import { formatEther } from "ethers/lib/utils.js";
 import { Address, encrypt, encryptAddress } from "../../helpers/enc";
-// This fails with some annoying webpack problems, i don't really want to deal with it
-// so i ripped a copy of the enc stuff to this workspace
-// import { encrypt } from "@eth-mail/client-lib/src/enc";
+
+
 interface FormProps {
   address: `0x${string}`;
+  defaultEncryptedAddress?: Address;
 }
+
 const EPSMailForm = (props: FormProps) => {
   const feeRead = useContractRead({
     address: props.address,
@@ -110,7 +111,7 @@ const EPSMailForm = (props: FormProps) => {
         }) => {
           return (
             // countryCode === country.country ||
-            countryCode === country.alpha2 
+            countryCode === country.alpha2
             // countryCode === country.alpha3 ||
             // countryCode === country.numeric
           );
