@@ -6,6 +6,7 @@
     "@types/node": "^16.18.12",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
+    "eps-scripts": "https://github.com/EthereumPostalService/eps-scripts",
     "eps-widget": "https://github.com/EthereumPostalService/eps-widget",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
